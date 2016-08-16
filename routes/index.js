@@ -1,9 +1,9 @@
+/// <reference path="../typings/tsd.d.ts"/>
 "use strict";
 var config = require('../config');
 var twit = require('twitter');
 var express = require('express');
 var router = express.Router();
-var path = require('path');
 var twitter = new twit({
     consumer_key: config.TWITTER_CONSUMER_KEY,
     consumer_secret: config.TWITTER_CONSUMER_SECRET,
@@ -18,6 +18,12 @@ router.get('/tweets', function (req, res, next) {
     twitter.get('search/tweets', { q: 'javascript', lang: 'es' }, function (error, tweets, response) {
         if (error)
             throw error;
+        res.send("<pre>" + JSON.stringify(tweets, null, 2) + "</pre>");
+    });
+});
+router.get('/update', function (req, res, next) {
+    twitter.post('statuses/update', { status: 'Hello Universe' }, function (error, tweets, response) {
+        //if(error) throw error;
         res.send("<pre>" + JSON.stringify(tweets, null, 2) + "</pre>");
     });
 });

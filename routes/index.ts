@@ -1,12 +1,15 @@
 /// <reference path="../typings/tsd.d.ts"/>
+
 import {Request, Response} from "express";
+import {path} from 'path';
+
 var config = require('../config');
 
 var twit = require('twitter');
 
 var express = require('express');
 var router = express.Router();
-var path = require('path');
+
 
 var twitter = new twit({
   consumer_key: config.TWITTER_CONSUMER_KEY,
@@ -25,6 +28,13 @@ router.get('/tweets', (req: Request, res: Response, next: Function) => {
     if(error) throw error;
     res.send("<pre>"+JSON.stringify(tweets,null,2)+"</pre>");
   })
-})
+});
+
+router.get('/update', (req: Request, res: Response, next: Function) => {
+  twitter.post('statuses/update',{status: 'Hello Universe'}, function (error: Error,tweets: any,response: Response){
+    //if(error) throw error;
+    res.send("<pre>"+JSON.stringify(tweets,null,2)+"</pre>");
+  })
+});
 
 module.exports = router;
